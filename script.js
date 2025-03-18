@@ -22,11 +22,13 @@ const ADMIN_PASSWORD = '27228771010';
 // Load fonts from localStorage or use initial data
 function loadFonts() {
     const fonts = JSON.parse(localStorage.getItem('fonts'));
+    console.log('Loaded fonts from localStorage:', fonts);
     return fonts && fonts.length > 0 ? fonts : initialFonts;
 }
 
 // Save fonts to localStorage
 function saveFonts(fonts) {
+    console.log('Saving fonts to localStorage:', fonts);
     localStorage.setItem('fonts', JSON.stringify(fonts));
 }
 
@@ -63,6 +65,7 @@ function loadCategoriesMain() {
     const categoryList = document.getElementById('categoryList');
     categoryList.innerHTML = '<button data-category="all">All</button>'; // Reset to "All" button
     const categories = [...new Set(fonts.map(font => font.category))];
+    console.log('Categories loaded:', categories);
 
     categories.forEach(category => {
         const button = document.createElement('button');
@@ -87,6 +90,7 @@ function filterFonts(category) {
 
 // Refresh the main page
 function refreshMainPage() {
+    console.log('Refreshing main page...');
     document.getElementById('fontList').innerHTML = ''; // Clear current fonts
     const fonts = loadFonts();
     fonts.forEach(font => addFontToList(font));
@@ -97,8 +101,17 @@ function refreshMainPage() {
 if (document.getElementById('fontList')) {
     refreshMainPage();
 
+    // Manual refresh button
+    document.getElementById('refreshButton').addEventListener('click', () => {
+        console.log('Manual refresh triggered');
+        refreshMainPage();
+    });
+
     // Check for updates every 2 seconds
-    setInterval(refreshMainPage, 2000);
+    setInterval(() => {
+        console.log('Checking for updates...');
+        refreshMainPage();
+    }, 2000);
 
     document.querySelectorAll('.category-list button').forEach(button => {
         button.addEventListener('click', () => {
@@ -129,6 +142,7 @@ if (document.getElementById('fontForm')) {
         const fonts = loadFonts();
         const categorySelect = document.getElementById('fontCategory');
         const categories = [...new Set(fonts.map(font => font.category))];
+        console.log('Admin categories loaded:', categories);
         
         categorySelect.innerHTML = '<option value="" disabled selected>Select or Add Category</option>';
         categories.forEach(category => {

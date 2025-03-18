@@ -45,6 +45,19 @@ header h1 {
     background-color: #2980b9;
 }
 
+#refreshButton {
+    padding: 10px 20px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#refreshButton:hover {
+    background-color: #27ae60;
+}
+
 .font-add-section, .font-delete-section, .category-delete-section {
     max-width: 600px;
     margin: 20px auto;
