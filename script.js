@@ -16,6 +16,9 @@ const initialFonts = [
     }
 ];
 
+// Hardcoded admin password
+const ADMIN_PASSWORD = '27228771010'; // Updated password
+
 // Load fonts from localStorage or use initial data
 function loadFonts() {
     return JSON.parse(localStorage.getItem('fonts')) || initialFonts;
@@ -80,6 +83,34 @@ if (document.getElementById('fontList')) {
 
 // Admin page logic
 if (document.getElementById('fontForm')) {
+    // Password check
+    window.checkPassword = function() {
+        const password = document.getElementById('adminPassword').value;
+        if (password === ADMIN_PASSWORD) {
+            document.getElementById('passwordPrompt').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            loadCategories();
+            loadDeleteList();
+        } else {
+            alert('Incorrect password!');
+        }
+    };
+
+    // Load categories into select
+    function loadCategories() {
+        const fonts = loadFonts();
+        const categorySelect = document.getElementById('fontCategory');
+        const categories = [...new Set(fonts.map(font => font.category))];
+        
+        categorySelect.innerHTML = '<option value="" disabled selected>Select or Add Category</option>';
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+    }
+
     // Add font form
     document.getElementById('fontForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -87,8 +118,12 @@ if (document.getElementById('fontForm')) {
         const fontName = document.getElementById('fontName').value;
         const fontDescription = document.getElementById('fontDescription').value;
         const fontLink = document.getElementById('fontLink').value;
-        const fontCategory = document.getElementById('fontCategory').value.toLowerCase();
+        let fontCategory = document.getElementById('fontCategory').value;
+        const newCategory = document.getElementById('newCategory').value;
         const fontImage = document.getElementById('fontImage').files[0];
+
+        // Use new category if provided, otherwise use selected
+        fontCategory = newCategory || fontCategory;
 
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -96,7 +131,7 @@ if (document.getElementById('fontForm')) {
                 name: fontName,
                 description: fontDescription,
                 link: fontLink,
-                category: fontCategory,
+                category: fontCategory.toLowerCase(),
                 image: event.target.result
             };
 
@@ -105,6 +140,7 @@ if (document.getElementById('fontForm')) {
             saveFonts(fonts);
 
             alert('Font added! Check the main page to see it.');
+            loadCategories(); // Update category dropdown
             loadDeleteList(); // Update delete list
         };
         reader.readAsDataURL(fontImage);
@@ -129,6 +165,7 @@ if (document.getElementById('fontForm')) {
                     fonts.splice(index, 1);
                     saveFonts(fonts);
                     loadDeleteList();
+                    loadCategories(); // Update categories if needed
                 }
             });
 
@@ -136,7 +173,4 @@ if (document.getElementById('fontForm')) {
             deleteList.appendChild(li);
         });
     }
-
-    // Initial load of delete list
-    loadDeleteList();
 }

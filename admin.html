@@ -7,29 +7,40 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Admin Panel - Font Management</h1>
-        <p><a href="index.html">Back to Main Page</a></p>
-    </header>
+    <div id="passwordPrompt" class="password-prompt">
+        <h2>Enter Admin Password</h2>
+        <input type="password" id="adminPassword" placeholder="Password">
+        <button onclick="checkPassword()">Submit</button>
+    </div>
 
-    <section class="font-add-section">
-        <h2>Add New Font</h2>
-        <form id="fontForm">
-            <input type="text" id="fontName" placeholder="Font Name" required>
-            <textarea id="fontDescription" placeholder="Font Description" required></textarea>
-            <input type="url" id="fontLink" placeholder="Download Link" required>
-            <input type="text" id="fontCategory" placeholder="Category (handwritten, decorative)" required>
-            <input type="file" id="fontImage" accept="image/*" required>
-            <button type="submit">Add Font</button>
-        </form>
-    </section>
+    <div id="adminContent" style="display: none;">
+        <header>
+            <h1>Admin Panel - Font Management</h1>
+            <p><a href="index.html">Back to Main Page</a></p>
+        </header>
 
-    <section class="font-delete-section">
-        <h2>Delete Fonts</h2>
-        <ul id="fontDeleteList">
-            <!-- Fonts will be listed here for deletion -->
-        </ul>
-    </section>
+        <section class="font-add-section">
+            <h2>Add New Font</h2>
+            <form id="fontForm">
+                <input type="text" id="fontName" placeholder="Font Name" required>
+                <textarea id="fontDescription" placeholder="Font Description" required></textarea>
+                <input type="url" id="fontLink" placeholder="Download Link" required>
+                <select id="fontCategory" required>
+                    <option value="" disabled selected>Select or Add Category</option>
+                </select>
+                <input type="text" id="newCategory" placeholder="Or type new category">
+                <input type="file" id="fontImage" accept="image/*" required>
+                <button type="submit">Add Font</button>
+            </form>
+        </section>
+
+        <section class="font-delete-section">
+            <h2>Delete Fonts</h2>
+            <ul id="fontDeleteList">
+                <!-- Fonts will be listed here for deletion -->
+            </ul>
+        </section>
+    </div>
 
     <script src="script.js"></script>
 </body>

@@ -52,7 +52,7 @@ header h1 {
     margin-top: 0;
 }
 
-form input, form textarea {
+form input, form textarea, form select {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -155,4 +155,37 @@ footer {
 footer a {
     color: #3498db;
     text-decoration: none;
+}
+
+.password-prompt {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.password-prompt input {
+    padding: 10px;
+    margin: 10px 0;
+    width: 80%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.password-prompt button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.password-prompt button:hover {
+    background-color: #2980b9;
 }
