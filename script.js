@@ -60,6 +60,7 @@ function addFontToList(font) {
 function loadCategoriesMain() {
     const fonts = loadFonts();
     const categoryList = document.getElementById('categoryList');
+    categoryList.innerHTML = '<button data-category="all">All</button>'; // Reset to "All" button
     const categories = [...new Set(fonts.map(font => font.category))];
 
     categories.forEach(category => {
@@ -85,9 +86,14 @@ function filterFonts(category) {
 
 // Main page logic
 if (document.getElementById('fontList')) {
-    const fonts = loadFonts();
-    fonts.forEach(font => addFontToList(font));
-    loadCategoriesMain();
+    function refreshMainPage() {
+        document.getElementById('fontList').innerHTML = ''; // Clear current fonts
+        const fonts = loadFonts();
+        fonts.forEach(font => addFontToList(font));
+        loadCategoriesMain();
+    }
+
+    refreshMainPage();
 
     document.querySelectorAll('.category-list button').forEach(button => {
         button.addEventListener('click', () => {
@@ -95,6 +101,9 @@ if (document.getElementById('fontList')) {
             filterFonts(category);
         });
     });
+
+    // Listen for storage changes (from admin page)
+    window.addEventListener('storage', refreshMainPage);
 }
 
 // Admin page logic
@@ -159,6 +168,7 @@ if (document.getElementById('fontForm')) {
             loadCategories();
             loadDeleteList();
             loadCategoryDeleteList();
+            window.dispatchEvent(new Event('storage')); // Trigger update on main page
         };
         reader.readAsDataURL(fontImage);
 
@@ -184,6 +194,7 @@ if (document.getElementById('fontForm')) {
                     loadDeleteList();
                     loadCategories();
                     loadCategoryDeleteList();
+                    window.dispatchEvent(new Event('storage')); // Trigger update on main page
                 }
             });
 
@@ -212,6 +223,7 @@ if (document.getElementById('fontForm')) {
                     loadDeleteList();
                     loadCategories();
                     loadCategoryDeleteList();
+                    window.dispatchEvent(new Event('storage')); // Trigger update on main page
                 }
             });
 
