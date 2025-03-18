@@ -93,7 +93,18 @@ if (document.getElementById('fontList')) {
         loadCategoriesMain();
     }
 
+    // Initial load
     refreshMainPage();
+
+    // Periodically check for updates every 5 seconds
+    setInterval(() => {
+        const currentFonts = JSON.stringify(loadFonts());
+        const previousFonts = JSON.stringify(document.currentFonts || []);
+        if (currentFonts !== previousFonts) {
+            refreshMainPage();
+            document.currentFonts = loadFonts(); // Store current state
+        }
+    }, 5000);
 
     document.querySelectorAll('.category-list button').forEach(button => {
         button.addEventListener('click', () => {
@@ -101,9 +112,6 @@ if (document.getElementById('fontList')) {
             filterFonts(category);
         });
     });
-
-    // Listen for storage changes (from admin page)
-    window.addEventListener('storage', refreshMainPage);
 }
 
 // Admin page logic
@@ -168,7 +176,6 @@ if (document.getElementById('fontForm')) {
             loadCategories();
             loadDeleteList();
             loadCategoryDeleteList();
-            window.dispatchEvent(new Event('storage')); // Trigger update on main page
         };
         reader.readAsDataURL(fontImage);
 
@@ -194,7 +201,6 @@ if (document.getElementById('fontForm')) {
                     loadDeleteList();
                     loadCategories();
                     loadCategoryDeleteList();
-                    window.dispatchEvent(new Event('storage')); // Trigger update on main page
                 }
             });
 
@@ -223,7 +229,6 @@ if (document.getElementById('fontForm')) {
                     loadDeleteList();
                     loadCategories();
                     loadCategoryDeleteList();
-                    window.dispatchEvent(new Event('storage')); // Trigger update on main page
                 }
             });
 
