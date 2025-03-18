@@ -12,23 +12,21 @@
         <p>Discover and download the best free fonts</p>
     </header>
 
-    <section class="font-add-section">
-        <h2>Добавить новый шрифт</h2>
-        <form id="fontForm">
-            <input type="text" id="fontName" placeholder="Название шрифта" required>
-            <textarea id="fontDescription" placeholder="Описание шрифта" required></textarea>
-            <input type="url" id="fontLink" placeholder="Ссылка на скачивание" required>
-            <input type="file" id="fontImage" accept="image/*" required>
-            <button type="submit">Добавить шрифт</button>
-        </form>
+    <section class="categories">
+        <h2>Категории шрифтов</h2>
+        <div class="category-list">
+            <button data-category="all">Все</button>
+            <button data-category="handwritten">Рукописные</button>
+            <button data-category="decorative">Декоративные</button>
+        </div>
     </section>
 
     <section class="font-list" id="fontList">
-        <!-- Список шрифтов будет добавляться сюда через JS -->
+        <!-- Шрифты будут добавляться сюда через JS -->
     </section>
 
     <footer>
-        <p>&copy; 2025 Free Fonts Collection</p>
+        <p>© 2025 Free Fonts Collection | <a href="admin.html">Админка</a></p>
     </footer>
 
     <script src="script.js"></script>

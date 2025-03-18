@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админка - Free Fonts</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Админка - Добавление шрифтов</h1>
+        <p><a href="index.html">Вернуться на главную</a></p>
+    </header>
+
+    <section class="font-add-section">
+        <h2>Добавить новый шрифт</h2>
+        <form id="fontForm">
+            <input type="text" id="fontName" placeholder="Название шрифта" required>
+            <textarea id="fontDescription" placeholder="Описание шрифта" required></textarea>
+            <input type="url" id="fontLink" placeholder="Ссылка на скачивание" required>
+            <input type="text" id="fontCategory" placeholder="Категория (handwritten, decorative)" required>
+            <input type="file" id="fontImage" accept="image/*" required>
+            <button type="submit">Добавить шрифт</button>
+        </form>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
