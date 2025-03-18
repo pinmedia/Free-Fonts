@@ -17,7 +17,7 @@ const initialFonts = [
 ];
 
 // Hardcoded admin password
-const ADMIN_PASSWORD = '27228771010'; // Updated password
+const ADMIN_PASSWORD = '27228771010';
 
 // Load fonts from localStorage or use initial data
 function loadFonts() {
@@ -56,6 +56,21 @@ function addFontToList(font) {
     document.getElementById('fontList').appendChild(fontCard);
 }
 
+// Load categories dynamically (for main page)
+function loadCategoriesMain() {
+    const fonts = loadFonts();
+    const categoryList = document.getElementById('categoryList');
+    const categories = [...new Set(fonts.map(font => font.category))];
+
+    categories.forEach(category => {
+        const button = document.createElement('button');
+        button.dataset.category = category;
+        button.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        button.addEventListener('click', () => filterFonts(category));
+        categoryList.appendChild(button);
+    });
+}
+
 // Filter fonts by category
 function filterFonts(category) {
     const fontCards = document.querySelectorAll('.font-card');
@@ -72,6 +87,7 @@ function filterFonts(category) {
 if (document.getElementById('fontList')) {
     const fonts = loadFonts();
     fonts.forEach(font => addFontToList(font));
+    loadCategoriesMain();
 
     document.querySelectorAll('.category-list button').forEach(button => {
         button.addEventListener('click', () => {
@@ -91,12 +107,13 @@ if (document.getElementById('fontForm')) {
             document.getElementById('adminContent').style.display = 'block';
             loadCategories();
             loadDeleteList();
+            loadCategoryDeleteList();
         } else {
             alert('Incorrect password!');
         }
     };
 
-    // Load categories into select
+    // Load categories into select (admin)
     function loadCategories() {
         const fonts = loadFonts();
         const categorySelect = document.getElementById('fontCategory');
@@ -122,7 +139,6 @@ if (document.getElementById('fontForm')) {
         const newCategory = document.getElementById('newCategory').value;
         const fontImage = document.getElementById('fontImage').files[0];
 
-        // Use new category if provided, otherwise use selected
         fontCategory = newCategory || fontCategory;
 
         const reader = new FileReader();
@@ -140,8 +156,9 @@ if (document.getElementById('fontForm')) {
             saveFonts(fonts);
 
             alert('Font added! Check the main page to see it.');
-            loadCategories(); // Update category dropdown
-            loadDeleteList(); // Update delete list
+            loadCategories();
+            loadDeleteList();
+            loadCategoryDeleteList();
         };
         reader.readAsDataURL(fontImage);
 
@@ -165,7 +182,36 @@ if (document.getElementById('fontForm')) {
                     fonts.splice(index, 1);
                     saveFonts(fonts);
                     loadDeleteList();
-                    loadCategories(); // Update categories if needed
+                    loadCategories();
+                    loadCategoryDeleteList();
+                }
+            });
+
+            li.appendChild(deleteButton);
+            deleteList.appendChild(li);
+        });
+    }
+
+    // Load categories into delete list
+    function loadCategoryDeleteList() {
+        const deleteList = document.getElementById('categoryDeleteList');
+        deleteList.innerHTML = '';
+        const fonts = loadFonts();
+        const categories = [...new Set(fonts.map(font => font.category))];
+
+        categories.forEach(category => {
+            const li = document.createElement('li');
+            li.textContent = category;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => {
+                if (confirm(`Are you sure you want to delete category "${category}" and all its fonts?`)) {
+                    const updatedFonts = fonts.filter(font => font.category !== category);
+                    saveFonts(updatedFonts);
+                    loadDeleteList();
+                    loadCategories();
+                    loadCategoryDeleteList();
                 }
             });
 

@@ -25,9 +25,15 @@ header h1 {
     text-align: center;
 }
 
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
 .category-list button {
     padding: 10px 20px;
-    margin: 5px;
     background-color: #3498db;
     color: white;
     border: none;
@@ -39,7 +45,7 @@ header h1 {
     background-color: #2980b9;
 }
 
-.font-add-section, .font-delete-section {
+.font-add-section, .font-delete-section, .category-delete-section {
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
@@ -48,7 +54,7 @@ header h1 {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.font-add-section h2, .font-delete-section h2 {
+.font-add-section h2, .font-delete-section h2, .category-delete-section h2 {
     margin-top: 0;
 }
 
@@ -77,7 +83,7 @@ form button:hover {
     max-width: 1200px;
     margin: 20px auto;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     padding: 20px;
 }
@@ -119,12 +125,12 @@ form button:hover {
     background-color: #c0392b;
 }
 
-.font-delete-section ul {
+.font-delete-section ul, .category-delete-section ul {
     list-style: none;
     padding: 0;
 }
 
-.font-delete-section li {
+.font-delete-section li, .category-delete-section li {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -132,7 +138,7 @@ form button:hover {
     border-bottom: 1px solid #ddd;
 }
 
-.font-delete-section button {
+.font-delete-section button, .category-delete-section button {
     background-color: #e74c3c;
     color: white;
     border: none;
@@ -141,7 +147,7 @@ form button:hover {
     cursor: pointer;
 }
 
-.font-delete-section button:hover {
+.font-delete-section button:hover, .category-delete-section button:hover {
     background-color: #c0392b;
 }
 
@@ -188,4 +194,24 @@ footer a {
 
 .password-prompt button:hover {
     background-color: #2980b9;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    .category-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .font-list {
+        grid-template-columns: 1fr;
+    }
+
+    .font-card {
+        padding: 10px;
+    }
 }
