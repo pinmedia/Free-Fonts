@@ -1,22 +1,32 @@
-// Начальные данные шрифтов
+// Initial font data
 const initialFonts = [
     {
         name: 'Lightning Script',
-        description: 'Красивый рукописный шрифт для творческих проектов.',
+        description: 'A beautiful handwritten font for creative projects.',
         link: 'https://www.creativefabrica.com/product/lightning-script/',
         category: 'handwritten',
         image: 'https://via.placeholder.com/300x150?text=Lightning+Script'
     },
     {
         name: 'Loving',
-        description: 'Элегантный шрифт для заголовков и романтических дизайнов.',
+        description: 'An elegant font for headlines and romantic designs.',
         link: 'https://www.creativefabrica.com/product/loving/',
         category: 'decorative',
         image: 'https://via.placeholder.com/300x150?text=Loving'
     }
 ];
 
-// Функция для добавления шрифта в список
+// Load fonts from localStorage or use initial data
+function loadFonts() {
+    return JSON.parse(localStorage.getItem('fonts')) || initialFonts;
+}
+
+// Save fonts to localStorage
+function saveFonts(fonts) {
+    localStorage.setItem('fonts', JSON.stringify(fonts));
+}
+
+// Add font to the list (for main page)
 function addFontToList(font) {
     const fontCard = document.createElement('div');
     fontCard.classList.add('font-card');
@@ -36,20 +46,14 @@ function addFontToList(font) {
 
     const link = document.createElement('a');
     link.href = font.link;
-    link.textContent = 'Скачать шрифт';
+    link.textContent = 'Download Font';
     link.target = '_blank';
     fontCard.appendChild(link);
 
     document.getElementById('fontList').appendChild(fontCard);
 }
 
-// Загрузка шрифтов из localStorage или начальных данных
-function loadFonts() {
-    const fonts = JSON.parse(localStorage.getItem('fonts')) || initialFonts;
-    fonts.forEach(font => addFontToList(font));
-}
-
-// Фильтрация по категориям
+// Filter fonts by category
 function filterFonts(category) {
     const fontCards = document.querySelectorAll('.font-card');
     fontCards.forEach(card => {
@@ -61,9 +65,11 @@ function filterFonts(category) {
     });
 }
 
-// Обработка главной страницы
+// Main page logic
 if (document.getElementById('fontList')) {
-    loadFonts();
+    const fonts = loadFonts();
+    fonts.forEach(font => addFontToList(font));
+
     document.querySelectorAll('.category-list button').forEach(button => {
         button.addEventListener('click', () => {
             const category = button.dataset.category;
@@ -72,8 +78,9 @@ if (document.getElementById('fontList')) {
     });
 }
 
-// Обработка админки
+// Admin page logic
 if (document.getElementById('fontForm')) {
+    // Add font form
     document.getElementById('fontForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -93,15 +100,43 @@ if (document.getElementById('fontForm')) {
                 image: event.target.result
             };
 
-            // Сохраняем в localStorage
-            const fonts = JSON.parse(localStorage.getItem('fonts')) || initialFonts;
+            const fonts = loadFonts();
             fonts.push(newFont);
-            localStorage.setItem('fonts', JSON.stringify(fonts));
+            saveFonts(fonts);
 
-            alert('Шрифт добавлен! Перейдите на главную, чтобы увидеть его.');
+            alert('Font added! Check the main page to see it.');
+            loadDeleteList(); // Update delete list
         };
         reader.readAsDataURL(fontImage);
 
         this.reset();
     });
+
+    // Load fonts into delete list
+    function loadDeleteList() {
+        const deleteList = document.getElementById('fontDeleteList');
+        deleteList.innerHTML = '';
+        const fonts = loadFonts();
+
+        fonts.forEach((font, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${font.name} (${font.category})`;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => {
+                if (confirm(`Are you sure you want to delete "${font.name}"?`)) {
+                    fonts.splice(index, 1);
+                    saveFonts(fonts);
+                    loadDeleteList();
+                }
+            });
+
+            li.appendChild(deleteButton);
+            deleteList.appendChild(li);
+        });
+    }
+
+    // Initial load of delete list
+    loadDeleteList();
 }
