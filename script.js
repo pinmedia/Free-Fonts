@@ -21,7 +21,8 @@ const ADMIN_PASSWORD = '27228771010';
 
 // Load fonts from localStorage or use initial data
 function loadFonts() {
-    return JSON.parse(localStorage.getItem('fonts')) || initialFonts;
+    const fonts = JSON.parse(localStorage.getItem('fonts'));
+    return fonts && fonts.length > 0 ? fonts : initialFonts;
 }
 
 // Save fonts to localStorage
@@ -84,27 +85,20 @@ function filterFonts(category) {
     });
 }
 
+// Refresh the main page
+function refreshMainPage() {
+    document.getElementById('fontList').innerHTML = ''; // Clear current fonts
+    const fonts = loadFonts();
+    fonts.forEach(font => addFontToList(font));
+    loadCategoriesMain();
+}
+
 // Main page logic
 if (document.getElementById('fontList')) {
-    function refreshMainPage() {
-        document.getElementById('fontList').innerHTML = ''; // Clear current fonts
-        const fonts = loadFonts();
-        fonts.forEach(font => addFontToList(font));
-        loadCategoriesMain();
-    }
-
-    // Initial load
     refreshMainPage();
 
-    // Periodically check for updates every 5 seconds
-    setInterval(() => {
-        const currentFonts = JSON.stringify(loadFonts());
-        const previousFonts = JSON.stringify(document.currentFonts || []);
-        if (currentFonts !== previousFonts) {
-            refreshMainPage();
-            document.currentFonts = loadFonts(); // Store current state
-        }
-    }, 5000);
+    // Check for updates every 2 seconds
+    setInterval(refreshMainPage, 2000);
 
     document.querySelectorAll('.category-list button').forEach(button => {
         button.addEventListener('click', () => {
