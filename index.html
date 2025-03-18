@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fonts Collection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Free Fonts Collection</h1>
+        <p>Discover and download the best free fonts</p>
+    </header>
+
+    <section class="font-add-section">
+        <h2>Добавить новый шрифт</h2>
+        <form id="fontForm">
+            <input type="text" id="fontName" placeholder="Название шрифта" required>
+            <textarea id="fontDescription" placeholder="Описание шрифта" required></textarea>
+            <input type="url" id="fontLink" placeholder="Ссылка на скачивание" required>
+            <input type="file" id="fontImage" accept="image/*" required>
+            <button type="submit">Добавить шрифт</button>
+        </form>
+    </section>
+
+    <section class="font-list" id="fontList">
+        <!-- Список шрифтов будет добавляться сюда через JS -->
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Free Fonts Collection</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
